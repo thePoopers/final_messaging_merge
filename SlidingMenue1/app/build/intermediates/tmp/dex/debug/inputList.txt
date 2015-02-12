@@ -1,0 +1,2 @@
+/home/mpcen-desktop/Coding/Android/BookIt/SlidingMenue1/app/build/intermediates/classes/debug
+/home/mpcen-desktop/Coding/Android/BookIt/SlidingMenue1/app/build/intermediates/pre-dexed/debug/support-v4-18.0.0-5c04495e99dc65743704762c5b5dd75d9264b5a1.jar
