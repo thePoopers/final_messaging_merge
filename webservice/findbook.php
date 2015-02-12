@@ -12,25 +12,22 @@ if (!empty($_POST)){
 		//Create some data that will be the JSON response
 		$response["success"] = 0;
 		$response["message"] = "Please enter a title, author, or ISBN.";
-		
 		//die will kill the page and not execute any code below
 		die(json_encode($response));	
 	}
 
 	//if the page hasnt died, we call isbndb
-
-	//header('Content-Type: application/json');
-
+	header('Content-Type: application/json');
 	//take input from textbox
 	$contents = $_POST["contents"];
 	//store json output from isbndb into output var
-	$output = file_get_contents('http://isbndb.com/api/v2/json/Q0DGGAQJ/books?q='.urlencode($contents).'');
+	$output = file_get_contents('https://www.googleapis.com/books/v1/volumes?q='
+		.urlencode($contents).'&startIndex=0&maxResults=10&key='.$key.'');
 
-
+	//echo json_encode($output);
 	echo $output;
 
 	//decode json into an object to make some logic out of results
-	
 	//$objJson = json_decode($output);
 
 	//if there are any results

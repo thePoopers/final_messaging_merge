@@ -5,7 +5,9 @@
 	// Make sure to manually create this on phpMyAdmin
 	$dbname = "bookit_webserver";     
 	$username = "root"; 
-    $password = "Manny!23"; 
+    $password = "Manny!23";
+
+    $key = "AIzaSyBlZGnFuy7ro_RieQn8zRNr2QSM5CjHatI";
     
     
 
