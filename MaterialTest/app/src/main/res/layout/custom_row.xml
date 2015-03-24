@@ -4,7 +4,7 @@
     android:layout_height="48dp"
     android:clickable="true"
     android:orientation="horizontal"
-    android:background="@drawable/custom_bg">
+    android:background="@color/colorOffWhite">
 
 
     <ImageView

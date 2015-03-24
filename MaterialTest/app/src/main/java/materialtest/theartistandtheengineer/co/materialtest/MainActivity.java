@@ -2,6 +2,7 @@ package materialtest.theartistandtheengineer.co.materialtest;
 
 import android.content.Intent;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,9 +46,19 @@ public class MainActivity extends ActionBarActivity {
 
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
+
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        mTabs.setDistributeEvenly(true);
+        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer(){
+
+        @Override
+        public int getIndicatorColor(int position){
+                return getResources().getColor(R.color.colorAccent);
+            }
+        });
+        mTabs.setCustomTabView(R.layout.custom_tab_view, R.id.tabText);
         mTabs.setViewPager(mPager);
 
     }
@@ -78,11 +93,12 @@ public class MainActivity extends ActionBarActivity {
 
     class MyPagerAdapter extends FragmentPagerAdapter {
 
-        String[] tabs;
+        int icons[] = {R.drawable.ic_book221, R.drawable.ic_announcement_black_48dp, R.drawable.ic_timer_auto_black_48dp};
+        String[] tabText = getResources().getStringArray(R.array.tabs);
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            tabs = getResources().getStringArray(R.array.tabs);
+            tabText = getResources().getStringArray(R.array.tabs);
         }
 
         @Override
@@ -93,7 +109,13 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return tabs[position];
+
+            Drawable drawable = getResources().getDrawable(icons[position]);
+            drawable.setBounds(0, 0, 60, 60);
+            ImageSpan imageSpan = new ImageSpan(drawable);
+            SpannableString spannableString = new SpannableString(" ");
+            spannableString.setSpan(imageSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return spannableString;
         }
 
         @Override
@@ -104,6 +126,7 @@ public class MainActivity extends ActionBarActivity {
 
     public static class MyFragment extends Fragment {
         private TextView textView;
+
         public static MyFragment getInstance(int position) {
             MyFragment myFragment = new MyFragment();
             Bundle args = new Bundle();
@@ -119,8 +142,8 @@ public class MainActivity extends ActionBarActivity {
             textView = (TextView) layout.findViewById(R.id.position);
             Bundle bundle = getArguments();
 
-            if(bundle != null){
-                textView.setText("The page selected is "+bundle.getInt("position"));
+            if (bundle != null) {
+                textView.setText("The page selected is " + bundle.getInt("position"));
             }
 
             return layout;
