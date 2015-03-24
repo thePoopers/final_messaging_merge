@@ -3,12 +3,15 @@ package materialtest.theartistandtheengineer.co.materialtest;
 import android.content.Context;
 
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.Collections;
@@ -21,15 +24,26 @@ public class InformationAdapter extends RecyclerView.Adapter<InformationAdapter.
 
     List<Information> data = Collections.emptyList();
     private LayoutInflater inflater;
+    private Context context;
+
     public InformationAdapter(Context context, List<Information> data) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = data;
     }
+
+    /*
+    public void delete(int position){
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
+    */
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.custom_row, parent, false);
+        Log.d("VIVZ", "onCreateHolder called ");
         MyViewHolder holder = new MyViewHolder(view);
 
         return holder;
@@ -37,15 +51,19 @@ public class InformationAdapter extends RecyclerView.Adapter<InformationAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Information current = data.get(position);
+        // Gives us the current data from current arrayList
+        final Information current = data.get(position);
+        Log.d("VIVZ", "onBindViewHolder called "+position);
         holder.title.setText(current.title);
         holder.icon.setImageResource(current.iconId);
+
     }
 
     @Override
     public int getItemCount() {
         return data.size();
     }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
@@ -55,6 +73,8 @@ public class InformationAdapter extends RecyclerView.Adapter<InformationAdapter.
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.listText);
             icon = (ImageView) itemView.findViewById(R.id.listIcon);
+
         }
     }
+
 }

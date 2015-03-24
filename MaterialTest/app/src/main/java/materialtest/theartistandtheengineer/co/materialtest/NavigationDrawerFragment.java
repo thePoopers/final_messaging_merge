@@ -2,6 +2,7 @@ package materialtest.theartistandtheengineer.co.materialtest;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,19 +63,38 @@ public class NavigationDrawerFragment extends Fragment {
         adapter = new InformationAdapter(getActivity(), getData());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+
+            // Here you can start a new activity or adding to the list of selected list that you want
+            @Override
+            public void onClick(View view, int position) {
+
+                Toast.makeText(getActivity(), "onClick "+position, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+                Toast.makeText(getActivity(), "onLongClick "+position, Toast.LENGTH_SHORT).show();
+
+            }
+        }));
         return layout;
     }
 
     public static List<Information> getData(){
         List<Information> data = new ArrayList<>();
-        int[] icons = {R.drawable.ic_book215, R.drawable.ic_book219,
-            R.drawable.ic_book220, R.drawable.ic_book221};
+        int[] icons = {R.drawable.ic_my_library_add_black_18dp, R.drawable.ic_my_library_add_black_18dp,
+            R.drawable.ic_my_library_add_black_18dp, R.drawable.ic_my_library_add_black_18dp};
+
+        // Titles for items in sliding menu
         String[] titles = {"Item 1", "Item 2", "Item 3", "Item 4"};
 
-        for(int i = 0; i < titles.length && i < icons.length; i++){
+        for(int i = 0; i < 100; i++){
             Information current = new Information();
-            current.iconId = icons[i];
-            current.title = titles[i];
+            current.iconId = icons[i%icons.length];
+            current.title = titles[i%titles.length];
             data.add(current);
         }
         return data;
@@ -142,6 +167,58 @@ public class NavigationDrawerFragment extends Fragment {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME,
                 Context.MODE_PRIVATE);
         return sharedPreferences.getString(preferenceName, defaultValue);
+    }
+
+    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private GestureDetector gestureDetector;
+        private ClickListener clickListener;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener){
+            Log.d("VIVZ", "constructor invoked ");
+            this.clickListener = clickListener;
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    Log.d("VIVZ", "onSingleTapUp "+e);
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+
+                    if(child != null && clickListener != null){
+                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                    }
+
+                    Log.d("VIVZ", "onLongPress "+e);
+                }
+            });
+        }
+
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+
+            if(child != null && clickListener != null && gestureDetector.onTouchEvent(e)){
+                clickListener.onClick(child, rv.getChildPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+            Log.d("VIVZ", "onTouchEvent "+e);
+        }
+    }
+
+    public static interface ClickListener{
+        public void onClick(View view, int position);
+        public void onLongClick(View view, int position);
     }
 
 }
