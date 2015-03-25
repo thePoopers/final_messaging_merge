@@ -55,11 +55,13 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public int getIndicatorColor(int position){
+
                 return getResources().getColor(R.color.colorAccent);
             }
         });
         mTabs.setCustomTabView(R.layout.custom_tab_view, R.id.tabText);
         mTabs.setViewPager(mPager);
+
 
     }
 
@@ -83,6 +85,15 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
             return true;
         }
+
+        // ActivityUsingTabLibrary
+        if(id == R.id.tabLayout){
+            //Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ActivityUsingTabLibrary.class));
+            //return true;
+        }
+
+
 
         if (id == R.id.navigate) {
             startActivity(new Intent(this, SubActivity.class));
@@ -111,7 +122,7 @@ public class MainActivity extends ActionBarActivity {
         public CharSequence getPageTitle(int position) {
 
             Drawable drawable = getResources().getDrawable(icons[position]);
-            drawable.setBounds(0, 0, 60, 60);
+            drawable.setBounds(0, 0, 70, 70);
             ImageSpan imageSpan = new ImageSpan(drawable);
             SpannableString spannableString = new SpannableString(" ");
             spannableString.setSpan(imageSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -23,6 +23,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="materialtest.theartistandtheengineer.co.materialtest.MainActivity" />
         </activity>
+        <activity
+            android:name=".ActivityUsingTabLibrary"
+            android:label="@string/title_activity_tab_library">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="materialtest.theartistandtheengineer.co.materialtest.MainActivity"/>
+
+        </activity>
+
     </application>
 
 </manifest>
