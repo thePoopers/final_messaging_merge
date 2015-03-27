@@ -1,4 +1,4 @@
-package materialtest.theartistandtheengineer.co.materialtest.tabs;
+package materialtest.theartistandtheengineer.co.materialtest.views;
 
 /**
  * Created by mannymartinez on 3/16/15.

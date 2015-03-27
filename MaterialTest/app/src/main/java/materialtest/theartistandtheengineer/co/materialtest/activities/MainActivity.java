@@ -1,32 +1,33 @@
-package materialtest.theartistandtheengineer.co.materialtest;
+package materialtest.theartistandtheengineer.co.materialtest.activities;
 
 import android.content.Intent;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import materialtest.theartistandtheengineer.co.materialtest.tabs.SlidingTabLayout;
+import materialtest.theartistandtheengineer.co.materialtest.fragments.MyFragment;
+import materialtest.theartistandtheengineer.co.materialtest.fragments.NavigationDrawerFragment;
+import materialtest.theartistandtheengineer.co.materialtest.R;
+import materialtest.theartistandtheengineer.co.materialtest.materialtest.ActivityUsingTabLibrary;
+import materialtest.theartistandtheengineer.co.materialtest.views.SlidingTabLayout;
 
-
+//BEFORE
+//CHANGES
+//HERE
 public class MainActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
@@ -43,18 +44,16 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().
                 findFragmentById(R.id.fragment_navigation_drawer);
-
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
         mTabs.setDistributeEvenly(true);
-        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer(){
+        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
 
-        @Override
-        public int getIndicatorColor(int position){
+            @Override
+            public int getIndicatorColor(int position) {
 
                 return getResources().getColor(R.color.colorAccent);
             }
@@ -87,12 +86,17 @@ public class MainActivity extends ActionBarActivity {
         }
 
         // ActivityUsingTabLibrary
-        if(id == R.id.tabLayout){
+        if (id == R.id.tabLayout) {
             //Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, ActivityUsingTabLibrary.class));
             //return true;
         }
 
+        if (id == R.id.vectorTest) {
+            //Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, VectorTestActivity.class));
+            //return true;
+        }
 
 
         if (id == R.id.navigate) {
@@ -135,6 +139,26 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public Fragment getItem(int num) {
+            return MyFragment.getInstance(num);
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        public CharSequence getPageTitle(int position) {
+            return getResources().getStringArray(R.array.tabs)[position];
+        }
+    }
+/*
     public static class MyFragment extends Fragment {
         private TextView textView;
 
@@ -159,5 +183,5 @@ public class MainActivity extends ActionBarActivity {
 
             return layout;
         }
-    }
+    }*/
 }

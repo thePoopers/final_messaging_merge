@@ -1,4 +1,4 @@
-package materialtest.theartistandtheengineer.co.materialtest.tabs;
+package materialtest.theartistandtheengineer.co.materialtest.views;
 
 /*
  * Copyright 2014 Google Inc. All rights reserved.
@@ -19,7 +19,6 @@ package materialtest.theartistandtheengineer.co.materialtest.tabs;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;

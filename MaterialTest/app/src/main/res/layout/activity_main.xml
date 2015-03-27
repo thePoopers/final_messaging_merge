@@ -9,13 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="materialtest.theartistandtheengineer.co.materialtest.MainActivity">
+        tools:context="materialtest.theartistandtheengineer.co.materialtest.activities.MainActivity">
 
         <include
             android:id="@+id/app_bar"
             layout="@layout/app_bar" />
 
-        <materialtest.theartistandtheengineer.co.materialtest.tabs.SlidingTabLayout
+        <materialtest.theartistandtheengineer.co.materialtest.views.SlidingTabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/fragment_navigation_drawer"
-        android:name="materialtest.theartistandtheengineer.co.materialtest.NavigationDrawerFragment"
+        android:name="materialtest.theartistandtheengineer.co.materialtest.fragments.NavigationDrawerFragment"
         android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
