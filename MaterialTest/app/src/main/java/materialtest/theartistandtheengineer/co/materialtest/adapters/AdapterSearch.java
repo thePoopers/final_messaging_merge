@@ -49,6 +49,7 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
     public void onBindViewHolder(final ViewHolderBookSearch holder, int position) {
         Book currentBook = listBooks.get(position);
         holder.bookTitle.setText(currentBook.getTitle());
+        holder.bookAuthor.setText(currentBook.getAuthors());
         holder.isbn_13.setText(currentBook.getISBN_13());
         String urlThumbnail = currentBook.geturlThumbnail();
         if(urlThumbnail != null){
@@ -76,12 +77,14 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
 
         private ImageView bookThumbnail;
         private TextView bookTitle;
+        private TextView bookAuthor;
         private TextView isbn_13;
 
         public ViewHolderBookSearch(View itemView) {
             super(itemView);
             bookThumbnail = (ImageView) itemView.findViewById(R.id.bookThumbnail);
             bookTitle = (TextView) itemView.findViewById(R.id.bookTitle);
+            bookAuthor = (TextView) itemView.findViewById(R.id.bookAuthor);
             isbn_13 = (TextView) itemView.findViewById(R.id.isbn_13);
 
         }

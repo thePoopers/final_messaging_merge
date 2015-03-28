@@ -44,7 +44,7 @@ public class FragmentSearch extends Fragment {
 
     public static final String URL_BOOK = "https://www.googleapis.com/books/v1/volumes";
     public static final String URL_BOOK_SEARCH = "q=";
-    public static final String URL_BOOK_CONTENTS = "the+kite+runner";
+    public static final String URL_BOOK_CONTENTS = "dave+ramsey";
     public static final String URL_BOOK_START_INDEX = "startIndex=";
     public static final String URL_BOOK_MAX_RESULTS = "maxResults=";
     public static final String URL_BOOK_PARAM_API_KEY = "key=";
@@ -82,7 +82,7 @@ public class FragmentSearch extends Fragment {
         return fragment;
     }
 
-    public static String getRequestUrl(int startIndex, int maxResults){
+    public static String getRequestUrl(int startIndex, int maxResults) {
 
         return URL_BOOK
                 + URL_CHAR_QUESTION
@@ -92,7 +92,7 @@ public class FragmentSearch extends Fragment {
                 + URL_BOOK_START_INDEX
                 + startIndex
                 + URL_CHAR_AMPERSAND
-                +URL_BOOK_MAX_RESULTS
+                + URL_BOOK_MAX_RESULTS
                 + maxResults
                 + URL_CHAR_AMPERSAND
                 + URL_BOOK_PARAM_API_KEY
@@ -137,17 +137,17 @@ public class FragmentSearch extends Fragment {
         requestQueue.add(request);
     }
 
-    private ArrayList<Book> parseJSONResponse(JSONObject response){
+    private ArrayList<Book> parseJSONResponse(JSONObject response) {
         ArrayList<Book> listBooks = new ArrayList<>();
 
         try {
             StringBuilder data = new StringBuilder();
             // If there are results
-            if(response.has("items")){
+            if (response.has("items")) {
                 // store all of the results in an JSON array
                 JSONArray arrayBooks = response.getJSONArray("items");
                 // loop through each of the results(array)
-                for(int i = 0; i < arrayBooks.length(); i++){
+                for (int i = 0; i < arrayBooks.length(); i++) {
 
                     JSONObject currentBook = arrayBooks.getJSONObject(i);
                     String id = currentBook.getString("id");
@@ -168,13 +168,12 @@ public class FragmentSearch extends Fragment {
                     String isbn2 = isbn_type2.getString("identifier");
                     String isbn = null;
 
-                    if(isbn1.length() > 10) {
+                    if (isbn1.length() > 10) {
                         isbn = isbn1;
-                    }else{
+                    } else {
                         isbn = isbn2;
                     }
 
-                    //urlthumbnail
                     JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                     String urlThumbnail = imageLinks.getString("thumbnail");
                     Book book = new Book();
@@ -194,7 +193,6 @@ public class FragmentSearch extends Fragment {
         }
         return listBooks;
     }
-
 
 
     @Override
