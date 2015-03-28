@@ -15,4 +15,8 @@ public class L {
     public static void t(Context context, String message){
         Toast.makeText(context, message + "", Toast.LENGTH_LONG).show();
     }
+
+    public static void T(Context context, String message){
+        Toast.makeText(context, message + "", Toast.LENGTH_LONG).show();
+    }
 }
