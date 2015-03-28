@@ -50,7 +50,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUserLearnedDrawer = Boolean.valueOf(readFromPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, "false"));
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mFromSavedInstanceState = true;
         }
     }
@@ -71,32 +71,32 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
-                Toast.makeText(getActivity(), "onClick "+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void onLongClick(View view, int position) {
 
-                Toast.makeText(getActivity(), "onLongClick "+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_SHORT).show();
 
             }
         }));
         return layout;
     }
 
-    public static List<Information> getData(){
+    public static List<Information> getData() {
         List<Information> data = new ArrayList<>();
         int[] icons = {R.drawable.ic_my_library_add_black_18dp, R.drawable.ic_my_library_add_black_18dp,
-            R.drawable.ic_my_library_add_black_18dp, R.drawable.ic_my_library_add_black_18dp};
+                R.drawable.ic_my_library_add_black_18dp, R.drawable.ic_my_library_add_black_18dp};
 
         // Titles for items in sliding menu
         String[] titles = {"Item 1", "Item 2", "Item 3", "Item 4"};
 
-        for(int i = 0; i < 100; i++){
+        for (int i = 0; i < 100; i++) {
             Information current = new Information();
-            current.iconId = icons[i%icons.length];
-            current.title = titles[i%titles.length];
+            current.iconId = icons[i % icons.length];
+            current.title = titles[i % titles.length];
             data.add(current);
         }
         return data;
@@ -107,15 +107,15 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout = drawerLayout;
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(),
                 drawerLayout, toolbar, R.string.drawer_open,
-                R.string.drawer_close){
+                R.string.drawer_close) {
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if(!mUserLearnedDrawer){
+                if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER,
-                            mUserLearnedDrawer+" ");
+                            mUserLearnedDrawer + " ");
                 }
 
                 getActivity().invalidateOptionsMenu();
@@ -131,7 +131,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                if(slideOffset<0.6) {
+                if (slideOffset < 0.6) {
                     toolbar.setAlpha(1 - slideOffset);
                 }
             }
@@ -154,7 +154,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public static void saveToPreferences(Context context, String preferenceName,
-            String preferenceValue){
+                                         String preferenceValue) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -165,7 +165,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public static String readFromPreferences(Context context, String preferenceName,
-            String defaultValue){
+                                             String defaultValue) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME,
                 Context.MODE_PRIVATE);
         return sharedPreferences.getString(preferenceName, defaultValue);
@@ -176,13 +176,13 @@ public class NavigationDrawerFragment extends Fragment {
         private GestureDetector gestureDetector;
         private ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener){
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
             Log.d("VIVZ", "constructor invoked ");
             this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onSingleTapUp(MotionEvent e) {
-                    Log.d("VIVZ", "onSingleTapUp "+e);
+                    Log.d("VIVZ", "onSingleTapUp " + e);
                     return true;
                 }
 
@@ -190,11 +190,11 @@ public class NavigationDrawerFragment extends Fragment {
                 public void onLongPress(MotionEvent e) {
                     View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
 
-                    if(child != null && clickListener != null){
+                    if (child != null && clickListener != null) {
                         clickListener.onLongClick(child, recyclerView.getChildPosition(child));
                     }
 
-                    Log.d("VIVZ", "onLongPress "+e);
+                    Log.d("VIVZ", "onLongPress " + e);
                 }
             });
         }
@@ -205,7 +205,7 @@ public class NavigationDrawerFragment extends Fragment {
 
             View child = rv.findChildViewUnder(e.getX(), e.getY());
 
-            if(child != null && clickListener != null && gestureDetector.onTouchEvent(e)){
+            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
                 clickListener.onClick(child, rv.getChildPosition(child));
             }
 
@@ -214,12 +214,13 @@ public class NavigationDrawerFragment extends Fragment {
 
         @Override
         public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-            Log.d("VIVZ", "onTouchEvent "+e);
+            Log.d("VIVZ", "onTouchEvent " + e);
         }
     }
 
-    public static interface ClickListener{
+    public static interface ClickListener {
         public void onClick(View view, int position);
+
         public void onLongClick(View view, int position);
     }
 
