@@ -40,7 +40,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".materialtest.ActivityUsingTabLibrary"/>
         </activity>
-
+        <activity
+            android:name=".activities.SingleBookActivity"
+            android:label="@string/title_activity_single_book">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".materialtest.ActivityUsingTabLibrary"/>
+        </activity>
     </application>
 
 </manifest>

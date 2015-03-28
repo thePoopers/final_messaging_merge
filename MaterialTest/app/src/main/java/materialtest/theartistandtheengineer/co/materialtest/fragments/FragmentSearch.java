@@ -2,6 +2,7 @@ package materialtest.theartistandtheengineer.co.materialtest.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
+import materialtest.theartistandtheengineer.co.materialtest.activities.SingleBookActivity;
 import materialtest.theartistandtheengineer.co.materialtest.adapters.AdapterSearch;
 import materialtest.theartistandtheengineer.co.materialtest.logging.L;
 import materialtest.theartistandtheengineer.co.materialtest.materialtest.MyApplication;
@@ -215,8 +217,8 @@ public class FragmentSearch extends Fragment {
             // Here you can start a new activity or adding to the list of selected list that you want
             @Override
             public void onClick(View view, int position) {
-
-                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), SingleBookActivity.class));
+                //Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
 
             }
 

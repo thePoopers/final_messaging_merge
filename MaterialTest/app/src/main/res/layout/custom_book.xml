@@ -8,7 +8,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/custom_book_border_style"
         android:orientation="vertical">
 
@@ -16,7 +17,6 @@
             android:id="@+id/box"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="2dp"
             android:background="@drawable/custom_book_background_style"
             android:orientation="horizontal">
 
@@ -42,7 +42,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignTop="@id/bookThumbnail"
                 android:layout_marginLeft="100dp"
-                android:layout_marginRight="16dp"
                 android:layout_alignParentEnd="true" />
 
             <TextView
@@ -51,10 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bookTitle"
                 android:layout_alignParentLeft="true"
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="@color/colorSecondaryText"
                 android:layout_alignParentEnd="true"
                 android:gravity="right"
-                android:layout_marginRight="16dp"
                 android:layout_marginLeft="100dp"
                 android:textSize="16dp"
                 android:id="@+id/bookAuthor"
@@ -66,13 +64,12 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bookAuthor"
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="@color/colorSecondaryText"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="right"
-                android:layout_marginRight="16dp"
                 android:layout_marginLeft="100dp"
-                android:textSize="14dp"
+                android:textSize="11dp"
                 android:id="@+id/isbn_13"
                 android:text="1234567890123"
                 android:layout_alignParentRight="true" />
