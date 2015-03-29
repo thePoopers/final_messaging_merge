@@ -5,10 +5,15 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="12dp">
 
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_below="@+id/app_bar"
         android:layout_marginRight="16dp"
         android:background="@drawable/custom_book_border_style"
         android:orientation="vertical">
@@ -21,10 +26,11 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="100dp"
+                android:layout_width="105dp"
+                android:layout_height="150dp"
                 android:src="@drawable/ic_book215"
                 android:id="@+id/bookThumbnail"
+                android:gravity="center"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
@@ -35,13 +41,13 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="18dp"
+                android:textSize="26dp"
                 android:id="@+id/bookTitle"
                 android:gravity="left"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignTop="@id/bookThumbnail"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="115dp"
                 android:layout_alignParentEnd="true" />
 
             <TextView
@@ -53,8 +59,8 @@
                 android:textColor="@color/colorSecondaryText"
                 android:layout_alignParentEnd="true"
                 android:gravity="left"
-                android:layout_marginLeft="80dp"
-                android:textSize="16dp"
+                android:layout_marginLeft="115dp"
+                android:textSize="22dp"
                 android:id="@+id/bookAuthor"
                 android:text="Manny Martinez"
                 android:layout_alignParentRight="true" />
@@ -68,8 +74,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="left"
-                android:layout_marginLeft="80dp"
-                android:textSize="11dp"
+                android:layout_marginLeft="115dp"
+                android:textSize="18dp"
                 android:id="@+id/isbn_13"
                 android:text="1234567890123"
                 android:layout_alignParentRight="true" />

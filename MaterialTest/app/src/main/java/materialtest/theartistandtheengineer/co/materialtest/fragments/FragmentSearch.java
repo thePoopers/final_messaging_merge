@@ -212,13 +212,15 @@ public class FragmentSearch extends Fragment {
         adapterSearch = new AdapterSearch(getActivity());
         listSearchedBooks.setAdapter(adapterSearch);
         sendJsonRequest();
+
+        /*
         listSearchedBooks.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), listSearchedBooks, new ClickListener() {
 
             // Here you can start a new activity or adding to the list of selected list that you want
             @Override
             public void onClick(View view, int position) {
-                startActivity(new Intent(getActivity(), SingleBookActivity.class));
-                //Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(getActivity(), SingleBookActivity.class));
+                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -228,7 +230,9 @@ public class FragmentSearch extends Fragment {
                 Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_SHORT).show();
 
             }
-        }));
+        }));*/
+
+
         return view;
     }
 
