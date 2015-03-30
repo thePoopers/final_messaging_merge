@@ -22,16 +22,16 @@ public class Book implements Parcelable{
     private String ISBN_13;
 
     public Book(String id,
-             String volumeInfo,
-             String title,
-             String authors,
-             String industryIdentifiers,
-             String type,
-             String identifier,
-             String imageLinks,
-             String urlThumbnail,
-             String selfLink,
-             String ISBN_13){
+                String volumeInfo,
+                String title,
+                String authors,
+                String industryIdentifiers,
+                String type,
+                String identifier,
+                String imageLinks,
+                String urlThumbnail,
+                String selfLink,
+                String ISBN_13){
 
         this.id = id;
         this.volumeInfo = volumeInfo;

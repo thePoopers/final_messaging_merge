@@ -121,7 +121,6 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
 
             //Toast.makeText(v.getContext(), bookDataArray[0]+"\n"+bookDataArray[1]+"\n"+bookDataArray[2]+"\n"+bookDataArray[3], Toast.LENGTH_SHORT).show();
 
-
             Context context = itemView.getContext();
             Intent intent = new Intent(context, SingleBookActivity.class);
             intent.putExtra("bookTitle", bookDataArray[0]);

@@ -24,4 +24,14 @@
         <item>TAB 3</item>
     </string-array>
 
+    <string name="condition_prompt">Book Condition</string>
+
+    <string-array name="condition_array">
+        <item>New</item>
+        <item>Like New</item>
+        <item>Good</item>
+        <item>Okay</item>
+        <item>Bad</item>
+    </string-array>
+
 </resources>
