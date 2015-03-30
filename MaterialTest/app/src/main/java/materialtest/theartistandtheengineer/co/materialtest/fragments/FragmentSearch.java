@@ -57,6 +57,7 @@ public class FragmentSearch extends Fragment {
     public static final String URL_BOOK_PARAM_API_KEY = "key=";
     public static final String URL_CHAR_QUESTION = "?";
     public static final String URL_CHAR_AMPERSAND = "&";
+    private static final String STATE_BOOKS = "state_books";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,6 +88,12 @@ public class FragmentSearch extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_BOOKS, listBooks);
     }
 
     public static String getRequestUrl(int startIndex, int maxResults) {
@@ -211,8 +218,15 @@ public class FragmentSearch extends Fragment {
         listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapterSearch = new AdapterSearch(getActivity());
         listSearchedBooks.setAdapter(adapterSearch);
-        sendJsonRequest();
+        if(savedInstanceState != null){
+            listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
+            adapterSearch.setBookList(listBooks);
+        }else if(listBooks != null) {
 
+        }
+        else {
+            sendJsonRequest();
+        }
         /*
         listSearchedBooks.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), listSearchedBooks, new ClickListener() {
 

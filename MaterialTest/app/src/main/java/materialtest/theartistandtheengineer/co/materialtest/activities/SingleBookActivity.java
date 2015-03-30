@@ -3,11 +3,16 @@ package materialtest.theartistandtheengineer.co.materialtest.activities;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import it.neokree.materialtabs.MaterialTabListener;
 import materialtest.theartistandtheengineer.co.materialtest.R;
 
 
@@ -15,20 +20,38 @@ public class SingleBookActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String newString;
+
+        /*
+            intent.putExtra("bookTitle", bookDataArray[0]);
+            intent.putExtra("bookAuthor", bookDataArray[1]);
+            intent.putExtra("isbn_13", bookDataArray[2]);
+            intent.putExtra("url", bookDataArray[3]);
+         */
+        //String newString;
+        String bookTitle, bookAuthor, isbn_13, url;
         super.onCreate(savedInstanceState);
 
         if(savedInstanceState == null){
             savedInstanceState = getIntent().getExtras();
             if(savedInstanceState == null){
-                newString = null;
+                //newString = null;
+                bookTitle = bookAuthor = isbn_13 = url = null;
+
             }else{
-                newString = savedInstanceState.getString("bookData");
+                //newString = savedInstanceState.getString("bookData");
+                bookTitle = savedInstanceState.getString("bookTitle");
+                bookAuthor = savedInstanceState.getString("bookAuthor");
+                isbn_13 = savedInstanceState.getString("isbn_13");
+                url = savedInstanceState.getString("url");
             }}else{
-               newString = (String) savedInstanceState.getSerializable("bookData");
+               //newString = (String) savedInstanceState.getSerializable("bookData");
+            bookTitle = (String) savedInstanceState.getSerializable("bookTitle");
+            bookAuthor= (String) savedInstanceState.getSerializable("bookAuthor");
+            isbn_13 = (String) savedInstanceState.getSerializable("isbn_13");
+            url= (String) savedInstanceState.getSerializable("url");
             }
 
-        Toast.makeText(this, newString.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, bookTitle.toString()+"\n"+bookAuthor.toString()+"\n"+isbn_13.toString()+"\n"+url.toString(), Toast.LENGTH_SHORT).show();
 
 
         setContentView(R.layout.activity_single_book);
@@ -47,6 +70,20 @@ public class SingleBookActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_single_book, menu);
         return true;
     }
+
+    /*
+    public class ViewHolder extends RecyclerView.ViewHolder{
+
+        public TextView txtTitle, txtAuthor;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            txtTitle = (TextView) itemView.findViewById(R.id.bookTitle);
+            txtAuthor = (TextView) itemView.findViewById(R.id.bookAuthor);
+        }
+    }*/
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -67,4 +104,5 @@ public class SingleBookActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

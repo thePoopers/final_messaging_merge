@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".materialtest.ActivityUsingTabLibrary"
-            android:label="Ubooks">
+            android:label="Ubooks"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

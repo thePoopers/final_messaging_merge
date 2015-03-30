@@ -1,9 +1,14 @@
 package materialtest.theartistandtheengineer.co.materialtest.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import materialtest.theartistandtheengineer.co.materialtest.logging.L;
+
 /**
  * Created by mpcen-desktop on 3/26/15.
  */
-public class Book {
+public class Book implements Parcelable{
     private String id;
     private String volumeInfo;
     private String title;
@@ -43,6 +48,13 @@ public class Book {
 
     public Book() {
 
+    }
+
+    public Book(Parcel input){
+        title = input.readString();
+        authors = input.readString();
+        ISBN_13 = input.readString();
+        urlThumbnail = input.readString();
     }
 
     public String getId(){
@@ -125,4 +137,30 @@ public class Book {
                 "urlThumbnail "+urlThumbnail+
                 "imageLinks "+imageLinks;
     }
+
+    @Override
+    public int describeContents() {
+        L.m("describe Contents Book");
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        L.m("writeToParcel Book");
+        dest.writeString(title);
+        dest.writeString(authors);
+        dest.writeString(ISBN_13);
+        dest.writeString(urlThumbnail);
+    }
+
+    public static final Parcelable.Creator<Book> CREATOR
+            = new Parcelable.Creator<Book>(){
+        public Book createFromParcel(Parcel in){
+            L.m("create from parcel: Book");
+            return new Book(in);
+        }
+        public Book[] newArray(int size){
+            return new Book[size];
+        }
+    };
 }

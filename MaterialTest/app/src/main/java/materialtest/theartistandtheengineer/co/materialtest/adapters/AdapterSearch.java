@@ -124,7 +124,10 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
 
             Context context = itemView.getContext();
             Intent intent = new Intent(context, SingleBookActivity.class);
-            intent.putExtra("bookData", bookDataArray[2]);
+            intent.putExtra("bookTitle", bookDataArray[0]);
+            intent.putExtra("bookAuthor", bookDataArray[1]);
+            intent.putExtra("isbn_13", bookDataArray[2]);
+            intent.putExtra("url", bookDataArray[3]);
             context.startActivity(intent);
 
         }
