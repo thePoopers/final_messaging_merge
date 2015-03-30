@@ -11,7 +11,6 @@
         layout="@layout/app_bar" />
 
     <android.support.v4.widget.DrawerLayout
-
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,7 +22,7 @@
 
         <fragment
             android:id="@+id/fragment_navigation_drawer"
-            android:name="materialtest.theartistandtheengineer.co.materialtest.NavigationDrawerFragment"
+            android:name="materialtest.theartistandtheengineer.co.materialtest.fragments.NavigationDrawerFragment"
             android:layout_width="@dimen/nav_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
