@@ -85,15 +85,20 @@ public class LoginActivity extends Activity {
 					// login user
 					checkLogin(email, password);
 
+                    ParseUser user = new ParseUser();
+                    user.setUsername(email);
+                    user.setPassword(password);
+                    user.setEmail(email);
+
                     //Messaging login
-                    ParseUser.logInInBackground(email, password, new LogInCallback() {
+                    user.logInInBackground(email, password, new LogInCallback() {
                         public void done(ParseUser user, com.parse.ParseException e) {
-                            if (user != null) {
+                            if (user != null && e == null) {
                                 startService(serviceIntent);
                                 Log.d("Messaging login", "Login successful");
                             } else {
                                 Toast.makeText(getApplicationContext(),
-                                        "Wrong username/password combo",
+                                        "You used the wrong username and password!",
                                         Toast.LENGTH_LONG).show();
                             }
                         }

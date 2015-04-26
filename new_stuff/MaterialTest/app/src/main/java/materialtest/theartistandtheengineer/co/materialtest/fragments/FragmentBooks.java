@@ -1,7 +1,9 @@
 package materialtest.theartistandtheengineer.co.materialtest.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +26,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
+import materialtest.theartistandtheengineer.co.materialtest.activities.BuyActivity;
+import materialtest.theartistandtheengineer.co.materialtest.activities.SellActivity;
+import materialtest.theartistandtheengineer.co.materialtest.activities.SingleBookActivity;
 import materialtest.theartistandtheengineer.co.materialtest.adapters.AdapterSearch;
 import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
 import materialtest.theartistandtheengineer.co.materialtest.materialtest.MyApplication;
@@ -47,7 +52,6 @@ public class FragmentBooks extends Fragment implements View.OnClickListener {
 
     private Button button_sell;
     private Button button_buy;
-    private EditText bookInfo;
 
 
     public static final String URL_BOOK = "https://www.googleapis.com/books/v1/volumes";
@@ -130,7 +134,6 @@ public class FragmentBooks extends Fragment implements View.OnClickListener {
         button_buy.setOnClickListener(this);
         button_sell = (Button) view.findViewById(R.id.button_sell);
         button_sell.setOnClickListener(this);
-        bookInfo = (EditText) view.findViewById(R.id.bookInfo);
 
         // Inflate the layout for this fragment
         return view;
@@ -155,7 +158,52 @@ public class FragmentBooks extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Log.d("BUTTON!!! ", String.valueOf(v));
-        Log.d("BOOK INFO!!! ", bookInfo.getText().toString());
+        Context context = v.getContext();
+        Log.d("PRESSED", (String) ((Button)v).getText());
+
+        // Start BUY BOOK Intent
+        if(((Button)v).getText().equals("BUY")) {
+            Intent intent = new Intent(context, BuyActivity.class);
+            startActivity(intent);
+        }
+        // Start SELL BOOK Intent
+        else{
+            Intent intent = new Intent(context, SellActivity.class);
+            startActivity(intent);
+        }
+
+
+
+        //context.startActivity(intent);
+
+        //if(((Button)v).getText().equals("SELL"))
+            //Log.d("BUTTON", "IS SELL!!!");
+
+        /*Button button_pressed = (Button)v;
+        String buttonText = button_pressed.getText().toString();
+
+        Log.d("Clicked ", buttonText);
+
+        if(buttonText.equals("BUY"))
+            Log.d("BUTTON", "IS BUY!!!");
+        if(buttonText.equals("SELL"))
+            Log.d("BUTTON", "IS SELL!!!");
+        */
+
+        //Context context = v.getContext();
+        //Intent intent = new Intent(context, SingleBookActivity.class);
+
+
+
+        /*
+        public void onClick(View v) {
+    // 1) Possibly check for instance of first
+    Button b = (Button)v;
+    String buttonText = b.getText().toString();
+}
+}
+         */
+
+
     }
 }

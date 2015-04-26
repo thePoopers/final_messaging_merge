@@ -34,8 +34,24 @@
         </activity>
         <activity
             android:name=".materialtest.ActivityUsingTabLibrary"
-            android:label="Ubooks"
+            android:label="Ubooks [UCF] - Home"
             android:launchMode="singleTop">
+        </activity>
+        <activity
+            android:name=".activities.SellActivity"
+            android:label="UBooks [UCF] - Sell"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".materialtest.ActivityUsingTabLibrary" />
+        </activity>
+        <activity
+            android:name=".activities.BuyActivity"
+            android:label="UBooks [UCF] - BUY"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".materialtest.ActivityUsingTabLibrary" />
         </activity>
         <activity
             android:name="materialtest.theartistandtheengineer.co.materialtest.MainActivity"
