@@ -108,7 +108,8 @@ public class MainActivity extends ActionBarActivity {
 
     class MyPagerAdapter extends FragmentPagerAdapter {
 
-        int icons[] = {R.drawable.ic_book221, R.drawable.ic_announcement_black_48dp, R.drawable.ic_timer_auto_black_48dp};
+        int icons[] = {R.drawable.ic_book221, R.drawable.ic_announcement_black_48dp};
+        // third tab R.drawable.ic_timer_auto_black_48dp
         String[] tabText = getResources().getStringArray(R.array.tabs);
 
         public MyPagerAdapter(FragmentManager fm) {
@@ -135,7 +136,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
     }
 
@@ -151,7 +152,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         public CharSequence getPageTitle(int position) {

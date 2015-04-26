@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentBooks">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookInfo"
+        android:layout_gravity="center_horizontal|top"
+        android:hint="Enter a title, author, and/or ISBN" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="BUY"
+        android:id="@+id/button_buy"
+        android:layout_gravity="right|center_vertical" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="SELL"
+        android:id="@+id/button_sell"
+        android:layout_gravity="left|center_vertical" />
+</FrameLayout>

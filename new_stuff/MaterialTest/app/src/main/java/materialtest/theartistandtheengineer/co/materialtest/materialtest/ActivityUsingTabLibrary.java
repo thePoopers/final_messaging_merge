@@ -23,6 +23,7 @@ import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 import materialtest.theartistandtheengineer.co.materialtest.LoginActivity;
+import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentBooks;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentNotifications;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentProfile;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentSearch;
@@ -59,7 +60,7 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_using_tab_library);
 
-        // Mikes Stuff
+        // Mikes R's Stuff
         txtName = (TextView) findViewById(R.id.name);
         txtEmail = (TextView) findViewById(R.id.email);
         btnLogout = (Button) findViewById(R.id.btnLogout);
@@ -87,7 +88,7 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
                 logoutUser();
             }
         });*/
-        // End of Mikes Stuff
+        // End of Mike R's Stuff
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -105,7 +106,6 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
             @Override
             public void onPageSelected(int position) {
                 tabHost.setSelectedNavigationItem(position);
-
             }
         });
 
@@ -140,7 +140,7 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
         }
 
         if (id == R.id.action_log_out) {
-            return true;
+            logoutUser();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -193,7 +193,9 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
     //ViewPagerAdapter for icon-based tabs
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        int icons[] = {R.drawable.ic_book215, R.drawable.ic_announcement_black_48dp, R.drawable.ic_timer_auto_black_48dp};
+        int icons[] = {R.drawable.ic_book215, R.drawable.ic_announcement_black_48dp};
+        //third icon = R.drawable.ic_timer_auto_black_48dp
+
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -204,21 +206,23 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
 
             switch (position){
                 case BOOKS_SEARCH:
-                    fragment = FragmentSearch.newInstance("", "");
+                    //fragment = FragmentSearch.newInstance("", "");
+                    fragment = FragmentBooks.newInstance("", "");
                     break;
                 case BOOKS_NOTIFICATIONS:
                     fragment = FragmentNotifications.newInstance("", "");
                     break;
+                /*
                 case BOOKS_PROFILE:
                     fragment = FragmentProfile.newInstance("", "");
-                    break;
+                    break;*/
             }
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override

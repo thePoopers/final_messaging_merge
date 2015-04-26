@@ -4,11 +4,13 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ public class SingleBookActivity extends ActionBarActivity {
 
     private Spinner spinner;
     private Button button;
+    private EditText sell_amount;
 
     private String bookTitle, bookAuthor, isbn_13, url;
 
@@ -68,6 +71,7 @@ public class SingleBookActivity extends ActionBarActivity {
         addListenerOnButton();
         addListenerOnSpinnerItemSelection();
 
+
         tv_bookTitle = (TextView) findViewById(R.id.bookTitle);
         tv_bookTitle.setText(bookTitle);
         tv_bookAuthor = (TextView) findViewById(R.id.bookAuthor);
@@ -75,7 +79,7 @@ public class SingleBookActivity extends ActionBarActivity {
         tv_isbn_13 = (TextView) findViewById(R.id.isbn_13);
         tv_isbn_13.setText(isbn_13);
         mImageView = (ImageView) findViewById(R.id.bookThumbnail);
-        mImageLoader = volleySingleton.getInstance().getImageLoader();
+        mImageLoader = VolleySingleton.getInstance().getImageLoader();
         mImageLoader.get(url, ImageLoader.getImageListener(mImageView, R.drawable.ic_book215, R.drawable.ic_book219));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -86,7 +90,7 @@ public class SingleBookActivity extends ActionBarActivity {
 
     // get the selected dropdown list value
     public void addListenerOnButton() {
-
+        sell_amount = (EditText) findViewById(R.id.sell_amount);
         spinner = (Spinner) findViewById(R.id.spinner);
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +101,9 @@ public class SingleBookActivity extends ActionBarActivity {
                         "OnClickListener : " +
                                 "\nSpinner: " + String.valueOf(spinner.getSelectedItem()),
                         Toast.LENGTH_SHORT).show();
+
+                Log.d("condition = ", String.valueOf(spinner.getSelectedItem()));
+                Log.d("asking price = ", sell_amount.getText().toString());
             }
         });
     }
@@ -112,6 +119,8 @@ public class SingleBookActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_single_book, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -138,6 +147,7 @@ public class SingleBookActivity extends ActionBarActivity {
             Toast.makeText(parent.getContext(),
                     "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
                     Toast.LENGTH_LONG).show();
+
         }
 
         @Override

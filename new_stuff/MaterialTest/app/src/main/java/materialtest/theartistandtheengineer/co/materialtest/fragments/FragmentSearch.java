@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import materialtest.theartistandtheengineer.co.materialtest.R;
 import materialtest.theartistandtheengineer.co.materialtest.activities.SingleBookActivity;
 import materialtest.theartistandtheengineer.co.materialtest.adapters.AdapterSearch;
+import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
 import materialtest.theartistandtheengineer.co.materialtest.logging.L;
 import materialtest.theartistandtheengineer.co.materialtest.materialtest.MyApplication;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
@@ -51,7 +52,7 @@ public class FragmentSearch extends Fragment {
 
     public static final String URL_BOOK = "https://www.googleapis.com/books/v1/volumes";
     public static final String URL_BOOK_SEARCH = "q=";
-    public static final String URL_BOOK_CONTENTS = "dave+ramsey";
+    public static final String URL_BOOK_CONTENTS = "francis+chan";
     public static final String URL_BOOK_START_INDEX = "startIndex=";
     public static final String URL_BOOK_MAX_RESULTS = "maxResults=";
     public static final String URL_BOOK_PARAM_API_KEY = "key=";
@@ -110,7 +111,7 @@ public class FragmentSearch extends Fragment {
                 + maxResults
                 + URL_CHAR_AMPERSAND
                 + URL_BOOK_PARAM_API_KEY
-                + MyApplication.API_KEY_GOOGLE_BOOKS;
+                + AppController.API_KEY_GOOGLE_BOOKS;
     }
 
     public FragmentSearch() {
