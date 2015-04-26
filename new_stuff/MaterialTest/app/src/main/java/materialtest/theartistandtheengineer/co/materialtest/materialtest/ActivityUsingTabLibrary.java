@@ -1,5 +1,6 @@
 package materialtest.theartistandtheengineer.co.materialtest.materialtest;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,16 +13,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 //import android.widget.Toolbar;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.HashMap;
 
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
+import materialtest.theartistandtheengineer.co.materialtest.LoginActivity;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentNotifications;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentProfile;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentSearch;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.MyFragment;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.NavigationDrawerFragment;
 import materialtest.theartistandtheengineer.co.materialtest.R;
+import materialtest.theartistandtheengineer.co.materialtest.helper.SQLiteHandler;
+import materialtest.theartistandtheengineer.co.materialtest.helper.SessionManager;
 
 
 /**
@@ -37,11 +46,49 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
     private static final int BOOKS_NOTIFICATIONS = 1;
     private static final int BOOKS_PROFILE = 2;
 
+    //Mikes Stuff
+    private TextView txtName;
+    private TextView txtEmail;
+    private Button btnLogout;
+    private SQLiteHandler db;
+    private SessionManager session;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_using_tab_library);
+
+        // Mikes Stuff
+        txtName = (TextView) findViewById(R.id.name);
+        txtEmail = (TextView) findViewById(R.id.email);
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+        // SqLite database handler
+        db = new SQLiteHandler(getApplicationContext());
+        // session manager
+        session = new SessionManager(getApplicationContext());
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
+        // Fetching user details from sqlite
+        HashMap<String, String> user = db.getUserDetails();
+        String name = user.get("name");
+        String email = user.get("email");
+        // Displaying the user details on the screen
+        //txtName.setText(name);
+        //txtEmail.setText(email);
+        // Logout button click event
+
+
+        /*btnLogout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                logoutUser();
+            }
+        });*/
+        // End of Mikes Stuff
+
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -71,6 +118,17 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
                             .setTabListener(this));
         }
 
+    }
+
+    private void logoutUser() {
+        session.setLogin(false);
+
+        db.deleteUsers();
+
+        // Launching the login activity
+        Intent intent = new Intent(ActivityUsingTabLibrary.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

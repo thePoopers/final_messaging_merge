@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
 import materialtest.theartistandtheengineer.co.materialtest.materialtest.MyApplication;
 
 /**
@@ -18,7 +19,7 @@ public class VolleySingleton {
     private RequestQueue mRequestQueue;
 
     private VolleySingleton(){
-        mRequestQueue = Volley.newRequestQueue(MyApplication.getAppContext());
+        mRequestQueue = Volley.newRequestQueue(AppController.getInstance());
         mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
 
             private LruCache<String, Bitmap> cache = new LruCache<>((int) ((Runtime.getRuntime().maxMemory()/1024)/8));
