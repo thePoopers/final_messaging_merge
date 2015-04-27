@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,7 +14,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
@@ -58,21 +54,10 @@ public class FragmentSearch extends Fragment {
     private String mParam2;
 
     private VolleySingleton volleySingleton;
-    private ImageLoader imageLoader;
     private RequestQueue requestQueue;
     private ArrayList<Book> listBooks = new ArrayList<>();
     private RecyclerView listSearchedBooks;
     private AdapterSearch adapterSearch;
-
-    /*
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentSearch.
-     */
-
 
     // TODO: Rename and change types and number of parameters
     public static FragmentSearch newInstance(String param1, String param2) {
@@ -122,6 +107,40 @@ public class FragmentSearch extends Fragment {
         volleySingleton = VolleySingleton.getInstance();
         requestQueue = volleySingleton.getRequestQueue();
         sendJsonRequest();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        listSearchedBooks = (RecyclerView) view.findViewById(R.id.listSearchedBooks);
+        listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapterSearch = new AdapterSearch(getActivity());
+        listSearchedBooks.setAdapter(adapterSearch);
+        if(savedInstanceState != null){
+            listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
+            adapterSearch.setBookList(listBooks);
+        }else if(listBooks != null) {
+
+        }
+        else {
+            sendJsonRequest();
+        }
+        /*
+        listSearchedBooks.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), listSearchedBooks, new ClickListener() {
+            // Here you can start a new activity or adding to the list of selected list that you want
+            @Override
+            public void onClick(View view, int position) {
+                //startActivity(new Intent(getActivity(), SingleBookActivity.class));
+                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_SHORT).show();
+            }
+        }));*/
+        return view;
     }
 
     private void sendJsonRequest() {
@@ -203,41 +222,7 @@ public class FragmentSearch extends Fragment {
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-        listSearchedBooks = (RecyclerView) view.findViewById(R.id.listSearchedBooks);
-        listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterSearch = new AdapterSearch(getActivity());
-        listSearchedBooks.setAdapter(adapterSearch);
-        if(savedInstanceState != null){
-            listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
-            adapterSearch.setBookList(listBooks);
-        }else if(listBooks != null) {
 
-        }
-        else {
-            sendJsonRequest();
-        }
-        /*
-        listSearchedBooks.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), listSearchedBooks, new ClickListener() {
-            // Here you can start a new activity or adding to the list of selected list that you want
-            @Override
-            public void onClick(View view, int position) {
-                //startActivity(new Intent(getActivity(), SingleBookActivity.class));
-                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_SHORT).show();
-            }
-        }));*/
-
-
-        return view;
-    }
 
     /*
     static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {

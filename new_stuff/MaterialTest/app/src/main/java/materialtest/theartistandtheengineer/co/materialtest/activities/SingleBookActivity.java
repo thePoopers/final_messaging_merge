@@ -1,5 +1,7 @@
 package materialtest.theartistandtheengineer.co.materialtest.activities;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,14 +18,27 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
+import materialtest.theartistandtheengineer.co.materialtest.app.AppConfig;
+import materialtest.theartistandtheengineer.co.materialtest.materialtest.ActivityUsingTabLibrary;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
 
 
 public class SingleBookActivity extends ActionBarActivity {
 
+    private ProgressDialog pDialog;
     private ImageLoader mImageLoader;
     private ImageView mImageView;
     private VolleySingleton volleySingleton;
@@ -44,6 +59,10 @@ public class SingleBookActivity extends ActionBarActivity {
         volleySingleton = VolleySingleton.getInstance();
 
         super.onCreate(savedInstanceState);
+
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
 
         // Get data from onClick inside listbooks view
         if (savedInstanceState == null) {
@@ -68,8 +87,41 @@ public class SingleBookActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_single_book);
 
-        addListenerOnButton();
-        addListenerOnSpinnerItemSelection();
+        //addListenerOnButton();
+        sell_amount = (EditText) findViewById(R.id.sell_amount);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                Toast.makeText(SingleBookActivity.this,
+                        "OnClickListener : " +
+                                "\nSpinner: " + String.valueOf(spinner.getSelectedItem()),
+                        Toast.LENGTH_SHORT).show();
+
+                if (sell_amount.length() > 0) {
+                    Log.d("asking price = ", sell_amount.getText().toString());
+                    Toast.makeText(getApplicationContext(),
+                            "Success", Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    // Prompt user to enter credentials
+                    Toast.makeText(getApplicationContext(),
+                            "Please enter a selling price.", Toast.LENGTH_LONG)
+                            .show();
+                }
+                //Log.d("condition = ", String.valueOf(spinner.getSelectedItem()));
+
+            }
+        });
+
+        //addListenerOnSpinnerItemSelection();
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 
         tv_bookTitle = (TextView) findViewById(R.id.bookTitle);
@@ -88,6 +140,18 @@ public class SingleBookActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
     // get the selected dropdown list value
     public void addListenerOnButton() {
         sell_amount = (EditText) findViewById(R.id.sell_amount);
@@ -102,8 +166,20 @@ public class SingleBookActivity extends ActionBarActivity {
                                 "\nSpinner: " + String.valueOf(spinner.getSelectedItem()),
                         Toast.LENGTH_SHORT).show();
 
-                Log.d("condition = ", String.valueOf(spinner.getSelectedItem()));
-                Log.d("asking price = ", sell_amount.getText().toString());
+                if(sell_amount.length() > 0){
+                    Log.d("asking price = ", sell_amount.getText().toString());
+                    Toast.makeText(getApplicationContext(),
+                            "Success", Toast.LENGTH_LONG)
+                            .show();
+                }
+                else {
+                    // Prompt user to enter credentials
+                    Toast.makeText(getApplicationContext(),
+                            "Please enter a selling price.", Toast.LENGTH_LONG)
+                            .show();
+                }
+                //Log.d("condition = ", String.valueOf(spinner.getSelectedItem()));
+
             }
         });
     }

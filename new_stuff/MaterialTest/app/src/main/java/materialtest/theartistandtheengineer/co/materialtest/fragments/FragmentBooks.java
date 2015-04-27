@@ -172,38 +172,5 @@ public class FragmentBooks extends Fragment implements View.OnClickListener {
             startActivity(intent);
         }
 
-
-
-        //context.startActivity(intent);
-
-        //if(((Button)v).getText().equals("SELL"))
-            //Log.d("BUTTON", "IS SELL!!!");
-
-        /*Button button_pressed = (Button)v;
-        String buttonText = button_pressed.getText().toString();
-
-        Log.d("Clicked ", buttonText);
-
-        if(buttonText.equals("BUY"))
-            Log.d("BUTTON", "IS BUY!!!");
-        if(buttonText.equals("SELL"))
-            Log.d("BUTTON", "IS SELL!!!");
-        */
-
-        //Context context = v.getContext();
-        //Intent intent = new Intent(context, SingleBookActivity.class);
-
-
-
-        /*
-        public void onClick(View v) {
-    // 1) Possibly check for instance of first
-    Button b = (Button)v;
-    String buttonText = b.getText().toString();
-}
-}
-         */
-
-
     }
 }

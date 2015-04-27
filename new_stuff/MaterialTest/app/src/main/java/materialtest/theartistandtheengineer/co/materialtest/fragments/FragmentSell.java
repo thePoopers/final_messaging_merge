@@ -1,13 +1,20 @@
 package materialtest.theartistandtheengineer.co.materialtest.fragments;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +30,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
+import materialtest.theartistandtheengineer.co.materialtest.activities.BuyActivity;
+import materialtest.theartistandtheengineer.co.materialtest.activities.SellActivity;
 import materialtest.theartistandtheengineer.co.materialtest.adapters.AdapterSearch;
 import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
@@ -36,7 +45,7 @@ import materialtest.theartistandtheengineer.co.materialtest.pojo.Book;
  * Use the {@link FragmentSell#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentSell extends Fragment {
+public class FragmentSell extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,7 +53,7 @@ public class FragmentSell extends Fragment {
 
     public static final String URL_BOOK = "https://www.googleapis.com/books/v1/volumes";
     public static final String URL_BOOK_SEARCH = "q=";
-    public static final String URL_BOOK_CONTENTS = "francis+chan";
+    private static String URL_BOOK_CONTENTS = "";
     public static final String URL_BOOK_START_INDEX = "startIndex=";
     public static final String URL_BOOK_MAX_RESULTS = "maxResults=";
     public static final String URL_BOOK_PARAM_API_KEY = "key=";
@@ -62,6 +71,8 @@ public class FragmentSell extends Fragment {
     private ArrayList<Book> listBooks = new ArrayList<>();
     private RecyclerView listSearchedBooks;
     private AdapterSearch adapterSearch;
+    private EditText search_book;
+    private Button button_search;
 
     /**
      * Use this factory method to create a new instance of
@@ -118,7 +129,50 @@ public class FragmentSell extends Fragment {
 
         volleySingleton = VolleySingleton.getInstance();
         requestQueue = volleySingleton.getRequestQueue();
-        sendJsonRequest();
+        //sendJsonRequest();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        search_book = (EditText) view.findViewById(R.id.search_book);
+        button_search = (Button) view.findViewById(R.id.button_search);
+        button_search.setOnClickListener(this);
+
+        listSearchedBooks = (RecyclerView) view.findViewById(R.id.listSearchedBooks);
+        listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapterSearch = new AdapterSearch(getActivity());
+        listSearchedBooks.setAdapter(adapterSearch);
+
+        if(savedInstanceState != null){
+            listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
+            adapterSearch.setBookList(listBooks);
+        }else if(listBooks != null) {
+
+        }
+        else {
+            //sendJsonRequest();
+        }
+        /*
+        listSearchedBooks.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), listSearchedBooks, new ClickListener() {
+            // Here you can start a new activity or adding to the list of selected list that you want
+            @Override
+            public void onClick(View view, int position) {
+                //startActivity(new Intent(getActivity(), SingleBookActivity.class));
+                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_SHORT).show();
+            }
+        }));*/
+
+
+        return view;
     }
 
     private void sendJsonRequest() {
@@ -199,51 +253,19 @@ public class FragmentSell extends Fragment {
         return listBooks;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-        listSearchedBooks = (RecyclerView) view.findViewById(R.id.listSearchedBooks);
-        listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterSearch = new AdapterSearch(getActivity());
-        listSearchedBooks.setAdapter(adapterSearch);
-        if(savedInstanceState != null){
-            listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
-            adapterSearch.setBookList(listBooks);
-        }else if(listBooks != null) {
-
-        }
-        else {
-            sendJsonRequest();
-        }
-        /*
-        listSearchedBooks.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), listSearchedBooks, new ClickListener() {
-            // Here you can start a new activity or adding to the list of selected list that you want
-            @Override
-            public void onClick(View view, int position) {
-                //startActivity(new Intent(getActivity(), SingleBookActivity.class));
-                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_SHORT).show();
-            }
-        }));*/
-
-
-        return view;
-    }
-
-
-
-
 
     @Override
     public void onDetach() {
         super.onDetach();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        //Log.d("BUTTON!!! ", String.valueOf(v));
+        Log.d("BOOK INFO!!! ", search_book.getText().toString());
+        URL_BOOK_CONTENTS = search_book.getText().toString();
+        sendJsonRequest();
     }
 
     /**
