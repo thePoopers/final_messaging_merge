@@ -239,6 +239,7 @@ public class FragmentSearch extends Fragment {
         return view;
     }
 
+    /*
     static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
@@ -282,7 +283,7 @@ public class FragmentSearch extends Fragment {
         public void onTouchEvent(RecyclerView rv, MotionEvent e) {
             Log.d("VIVZ", "onTouchEvent " + e);
         }
-    }
+    }*/
 
     public static interface ClickListener{
         public void onClick(View view, int position);

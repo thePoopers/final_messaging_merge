@@ -79,7 +79,7 @@
             android:label="@string/title_activity_single_book">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".materialtest.ActivityUsingTabLibrary"/>
+                android:value="materialtest.theartistandtheengineer.co.materialtest.activities.SellActivity"/>
         </activity>
 
         <service android:name="com.parse.PushService" />
