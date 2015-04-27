@@ -2,7 +2,6 @@ package materialtest.theartistandtheengineer.co.materialtest.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,16 +23,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URL;
 import java.util.ArrayList;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
-import materialtest.theartistandtheengineer.co.materialtest.activities.SingleBookActivity;
 import materialtest.theartistandtheengineer.co.materialtest.adapters.AdapterSearch;
 import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
-import materialtest.theartistandtheengineer.co.materialtest.logging.L;
-import materialtest.theartistandtheengineer.co.materialtest.materialtest.MyApplication;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
 import materialtest.theartistandtheengineer.co.materialtest.pojo.Book;
 
