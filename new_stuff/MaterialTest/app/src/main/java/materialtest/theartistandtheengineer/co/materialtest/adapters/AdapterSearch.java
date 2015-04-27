@@ -3,16 +3,11 @@ package materialtest.theartistandtheengineer.co.materialtest.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -21,11 +16,8 @@ import java.util.ArrayList;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
 import materialtest.theartistandtheengineer.co.materialtest.activities.SingleBookActivity;
-import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentSearch;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
 import materialtest.theartistandtheengineer.co.materialtest.pojo.Book;
-
-import static android.view.GestureDetector.*;
 
 /**
  * Created by mpcen-desktop on 3/27/15.
