@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.android.volley.Request.Method;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -34,11 +35,21 @@ import java.util.Map;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
 import materialtest.theartistandtheengineer.co.materialtest.app.AppConfig;
+import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
+import materialtest.theartistandtheengineer.co.materialtest.helper.SQLiteHandler;
+import materialtest.theartistandtheengineer.co.materialtest.helper.SessionManager;
 import materialtest.theartistandtheengineer.co.materialtest.materialtest.ActivityUsingTabLibrary;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+//import materialtest.theartistandtheengineer.co.materialtest.sharedpreferences.*;
 
 public class SingleBookActivity extends ActionBarActivity implements View.OnClickListener,DialogInterface.OnClickListener{
+
+    private SQLiteHandler db;
+    private SessionManager session;
 
     private ProgressDialog pDialog;
     private ImageLoader mImageLoader;
@@ -53,16 +64,34 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
     private Button button;
     private EditText sell_amount;
 
+    private HashMap<String, String> userData;
+
     private TextView t;
 
     private String bookTitle, bookAuthor, isbn_13, url;
 
 
+    private String uid;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        volleySingleton = VolleySingleton.getInstance();
 
         super.onCreate(savedInstanceState);
+
+        db = new SQLiteHandler(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
+
+        volleySingleton = VolleySingleton.getInstance();
+
+
+        /*
+        db = new SQLiteHandler(getApplicationContext());
+        userData = db.getUserDetails();
+        uid = userData.get("uid");
+        Log.d("THE UNIQUE ID IS =", uid);*/
+
+
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -244,10 +273,107 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
     }
 
     private void postSale(final String bookTitle, final String bookAuthor, final String isbn_13, final String sell_amount, final String condition) {
+
+        HashMap<String, String> user = db.getUserDetails();
+        final String unique_id = user.get("uid");
+
+        Log.d("UID RESPONSE", unique_id);
+
+        String tag_string_sell = "req_sell";
         pDialog.setMessage("Posting...");
+        Log.d("SELL RESPONSE", "inside postSale");
         showDialog();
-        hideDialog();
+
+        StringRequest strReq = new StringRequest(Method.POST,
+                AppConfig.URL_SELL, new Response.Listener<String>() {
+
+
+
+            @Override
+            public void onResponse(String response) {
+                Log.d("THE RESPONSE!!!", "Sell Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    Log.d("SELL RESPONSE", "inside try");
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    // Check for error node in json
+                    if (!error) {
+                        Log.d("SELL RESPONSE", "inside not err");
+                        // user successfully logged in
+                        // Create login session
+                        //session.setLogin(true);
+
+                        //CALL APPCONFIG (get uniqueid)
+                        //String unique_id = AppConfig.unique_id;
+                        //String
+                        //Log.d("UNIQUE ID IS ", unique_id.toString());
+
+                        finish();
+                    } else {
+                        Log.d("SELL RESPONSE", "inside else");
+                        // Error in login. Get the error message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("SELL RESPONSE", "inside onerrres");
+                Log.e("err", "Login Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Log.d("SELL RESPONSE", "inside getparams");
+                Map<String, String> params = new HashMap<String, String>();
+
+                //float price = Float.valueOf(sell_amount);
+                double price = -1;
+                try{
+                    price = Float.parseFloat(sell_amount);
+                    params.put("tag", "sell");
+                    params.put("seller_id", unique_id);
+                    params.put("price", sell_amount);
+                    params.put("isbn", isbn_13);
+                    params.put("bcondition", condition);
+                    params.put("author", bookAuthor);
+                    params.put("title", bookTitle);
+
+                }
+                catch(NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "Please enter a valid price", Toast.LENGTH_LONG).show();
+                }
+                //left = post var, right = java var
+
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_sell);
+
     }
+
+
+
 
     private class CustomOnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         @Override

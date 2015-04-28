@@ -31,6 +31,7 @@ import java.util.Map;
 import  materialtest.theartistandtheengineer.co.materialtest.app.AppConfig;
 import  materialtest.theartistandtheengineer.co.materialtest.app.AppController;
 import  materialtest.theartistandtheengineer.co.materialtest.helper.MessageService;
+import materialtest.theartistandtheengineer.co.materialtest.helper.SQLiteHandler;
 import  materialtest.theartistandtheengineer.co.materialtest.helper.SessionManager;
 import materialtest.theartistandtheengineer.co.materialtest.materialtest.ActivityUsingTabLibrary;
 
@@ -43,7 +44,8 @@ public class LoginActivity extends Activity {
 	private EditText inputPassword;
 	private ProgressDialog pDialog;
 	private SessionManager session;
-    private Intent serviceIntent;
+	private Intent serviceIntent;
+	private SQLiteHandler db;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class LoginActivity extends Activity {
 		// Session manager
 		session = new SessionManager(getApplicationContext());
 
+		db = new SQLiteHandler(getApplicationContext());
+
 		// Check if user is already logged in or not
 		if (session.isLoggedIn()) {
 			// User is already logged in. Take him to main activity
@@ -70,8 +74,8 @@ public class LoginActivity extends Activity {
 			finish();
 		}
 
-        //Messaging service
-        serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+		//Messaging service
+		serviceIntent = new Intent(getApplicationContext(), MessageService.class);
 
 		// Login button Click Event
 		btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -85,24 +89,24 @@ public class LoginActivity extends Activity {
 					// login user
 					checkLogin(email, password);
 
-                    ParseUser user = new ParseUser();
-                    user.setUsername(email);
-                    user.setPassword(password);
-                    user.setEmail(email);
+					ParseUser user = new ParseUser();
+					user.setUsername(email);
+					user.setPassword(password);
+					user.setEmail(email);
 
-                    //Messaging login
-                    user.logInInBackground(email, password, new LogInCallback() {
-                        public void done(ParseUser user, com.parse.ParseException e) {
-                            if (user != null && e == null) {
-                                startService(serviceIntent);
-                                Log.d("Messaging login", "Login successful");
-                            } else {
-                                Toast.makeText(getApplicationContext(),
-                                        "You used the wrong username and password!",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+					//Messaging login
+					user.logInInBackground(email, password, new LogInCallback() {
+						public void done(ParseUser user, com.parse.ParseException e) {
+							if (user != null && e == null) {
+								startService(serviceIntent);
+								Log.d("Messaging login", "Login successful");
+							} else {
+								Toast.makeText(getApplicationContext(),
+										"You used the wrong username and password!",
+										Toast.LENGTH_LONG).show();
+							}
+						}
+					});
 
 				} else {
 					// Prompt user to enter credentials
@@ -140,48 +144,61 @@ public class LoginActivity extends Activity {
 		StringRequest strReq = new StringRequest(Method.POST,
 				AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
-					@Override
-					public void onResponse(String response) {
-						Log.d(TAG, "Login Response: " + response.toString());
-						hideDialog();
+			@Override
+			public void onResponse(String response) {
+				Log.d(TAG, "Login Response: " + response.toString());
+				hideDialog();
 
-						try {
-							JSONObject jObj = new JSONObject(response);
-							boolean error = jObj.getBoolean("error");
+				try {
+					JSONObject jObj = new JSONObject(response);
+					boolean error = jObj.getBoolean("error");
 
-							// Check for error node in json
-							if (!error) {
-								// user successfully logged in
-								// Create login session
-								session.setLogin(true);
+					// Check for error node in json
+					if (!error) {
+						// user successfully logged in
+						// Create login session
+						session.setLogin(true);
 
-								// Launch main activity
-								Intent intent = new Intent(LoginActivity.this,
-										ActivityUsingTabLibrary.class);
-								startActivity(intent);
-								finish();
-							} else {
-								// Error in login. Get the error message
-								String errorMsg = jObj.getString("error_msg");
-								Toast.makeText(getApplicationContext(),
-										errorMsg, Toast.LENGTH_LONG).show();
-							}
-						} catch (JSONException e) {
-							// JSON error
-							e.printStackTrace();
-						}
+						String uid = jObj.getString("uid");
 
-					}
-				}, new Response.ErrorListener() {
+						JSONObject user = jObj.getJSONObject("user");
+						String name = user.getString("name");
+						String email = user.getString("email");
+						String created_at = user.getString("created_at");
+						int reputation_avg = user.getInt("reputation_avg");
+						int reputation_total = user.getInt("reputation_total");
 
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.e(TAG, "Login Error: " + error.getMessage());
+						// Inserting row in users table
+						db.addUser(name, email, uid, created_at, reputation_avg, reputation_total);
+
+
+						// Launch main activity
+						Intent intent = new Intent(LoginActivity.this,
+								ActivityUsingTabLibrary.class);
+						startActivity(intent);
+						finish();
+					} else {
+						// Error in login. Get the error message
+						String errorMsg = jObj.getString("error_msg");
 						Toast.makeText(getApplicationContext(),
-								error.getMessage(), Toast.LENGTH_LONG).show();
-						hideDialog();
+								errorMsg, Toast.LENGTH_LONG).show();
 					}
-				}) {
+				} catch (JSONException e) {
+					// JSON error
+					e.printStackTrace();
+				}
+
+			}
+		}, new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				Log.e(TAG, "Login Error: " + error.getMessage());
+				Toast.makeText(getApplicationContext(),
+						error.getMessage(), Toast.LENGTH_LONG).show();
+				hideDialog();
+			}
+		}) {
 
 			@Override
 			protected Map<String, String> getParams() {

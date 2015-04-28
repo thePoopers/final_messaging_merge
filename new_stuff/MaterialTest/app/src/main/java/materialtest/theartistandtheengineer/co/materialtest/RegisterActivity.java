@@ -44,7 +44,7 @@ public class RegisterActivity extends Activity {
 	private ProgressDialog pDialog;
 	private SessionManager session;
 	private SQLiteHandler db;
-    private Intent serviceIntent;
+	private Intent serviceIntent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,8 +76,8 @@ public class RegisterActivity extends Activity {
 			finish();
 		}
 
-        //MessagingService
-        serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+		//MessagingService
+		serviceIntent = new Intent(getApplicationContext(), MessageService.class);
 
 		// Register Button Click event
 		btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -89,23 +89,23 @@ public class RegisterActivity extends Activity {
 				if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
 					registerUser(name, email, password);
 
-                    //Register user for messaging (using email as username)
-                    ParseUser user = new ParseUser();
-                    user.setUsername(email);
-                    user.setPassword(password);
+					//Register user for messaging (using email as username)
+					ParseUser user = new ParseUser();
+					user.setUsername(email);
+					user.setPassword(password);
 
-                    user.signUpInBackground(new SignUpCallback() {
-                        public void done(com.parse.ParseException e) {
-                            if (e == null) {
-                                startService(serviceIntent);
-                                Log.d("Messaging Register", "Login successful");
-                            } else {
-                                Toast.makeText(getApplicationContext(),
-                                        "There was an error signing up for parse messaging."
-                                        , Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }); //end of messaging sign-up.
+					user.signUpInBackground(new SignUpCallback() {
+						public void done(com.parse.ParseException e) {
+							if (e == null) {
+								startService(serviceIntent);
+								Log.d("Messaging Register", "Login successful");
+							} else {
+								Toast.makeText(getApplicationContext(),
+										"There was an error signing up for parse messaging."
+										, Toast.LENGTH_LONG).show();
+							}
+						}
+					}); //end of messaging sign-up.
 				} else {
 					Toast.makeText(getApplicationContext(),
 							"Please enter your details!", Toast.LENGTH_LONG)
@@ -132,7 +132,7 @@ public class RegisterActivity extends Activity {
 	 * email, password) to register url
 	 * */
 	private void registerUser(final String name, final String email,
-			final String password) {
+							  final String password) {
 		// Tag used to cancel the request
 		String tag_string_req = "req_register";
 
@@ -142,57 +142,59 @@ public class RegisterActivity extends Activity {
 		StringRequest strReq = new StringRequest(Method.POST,
 				AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
-					@Override
-					public void onResponse(String response) {
-						Log.d(TAG, "Register Response: " + response.toString());
-						hideDialog();
+			@Override
+			public void onResponse(String response) {
+				Log.d(TAG, "Register Response: " + response.toString());
+				hideDialog();
 
-						try {
-							JSONObject jObj = new JSONObject(response);
-							boolean error = jObj.getBoolean("error");
-							if (!error) {
-								// User successfully stored in MySQL
-								// Now store the user in sqlite
-								String uid = jObj.getString("uid");
+				try {
+					JSONObject jObj = new JSONObject(response);
+					boolean error = jObj.getBoolean("error");
+					if (!error) {
+						// User successfully stored in MySQL
+						// Now store the user in sqlite
+						String uid = jObj.getString("uid");
 
-								JSONObject user = jObj.getJSONObject("user");
-								String name = user.getString("name");
-								String email = user.getString("email");
-								String created_at = user
-										.getString("created_at");
+						JSONObject user = jObj.getJSONObject("user");
+						String name = user.getString("name");
+						String email = user.getString("email");
+						String created_at = user
+								.getString("created_at");
+						int reputation_avg = user.getInt("reputation_avg");
+						int reputation_total = user.getInt("reputation_total");
 
-								// Inserting row in users table
-								db.addUser(name, email, uid, created_at);
+						// Inserting row in users table
+						db.addUser(name, email, uid, created_at, reputation_avg, reputation_total);
 
-								// Launch login activity
-								Intent intent = new Intent(
-										RegisterActivity.this,
-										LoginActivity.class);
-								startActivity(intent);
-								finish();
-							} else {
+						// Launch login activity
+						Intent intent = new Intent(
+								RegisterActivity.this,
+								LoginActivity.class);
+						startActivity(intent);
+						finish();
+					} else {
 
-								// Error occurred in registration. Get the error
-								// message
-								String errorMsg = jObj.getString("error_msg");
-								Toast.makeText(getApplicationContext(),
-										errorMsg, Toast.LENGTH_LONG).show();
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-
-					}
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.e(TAG, "Registration Error: " + error.getMessage());
+						// Error occurred in registration. Get the error
+						// message
+						String errorMsg = jObj.getString("error_msg");
 						Toast.makeText(getApplicationContext(),
-								error.getMessage(), Toast.LENGTH_LONG).show();
-						hideDialog();
+								errorMsg, Toast.LENGTH_LONG).show();
 					}
-				}) {
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+		}, new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				Log.e(TAG, "Registration Error: " + error.getMessage());
+				Toast.makeText(getApplicationContext(),
+						error.getMessage(), Toast.LENGTH_LONG).show();
+				hideDialog();
+			}
+		}) {
 
 			@Override
 			protected Map<String, String> getParams() {

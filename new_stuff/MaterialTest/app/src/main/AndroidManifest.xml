@@ -97,15 +97,12 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-<!--                   IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name. -->
+                <!--                   IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name. -->
                 <category android:name="materialtest.theartistandtheengineer.co.materialtest" />
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.ConfirmSellActivity"
-            android:label="@string/title_activity_confirm_sell" >
-        </activity>
+
     </application>
 
 </manifest>

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
+import  materialtest.theartistandtheengineer.co.materialtest.app.AppConfig;
 import materialtest.theartistandtheengineer.co.materialtest.pojo.Information;
 import materialtest.theartistandtheengineer.co.materialtest.adapters.InformationAdapter;
 
