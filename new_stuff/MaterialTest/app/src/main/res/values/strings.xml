@@ -45,5 +45,6 @@
         <item>Okay</item>
         <item>Bad</item>
     </string-array>
+    <string name="title_activity_confirm_sell">ConfirmSellActivity</string>
 
 </resources>

@@ -1,6 +1,8 @@
 package materialtest.theartistandtheengineer.co.materialtest.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -36,7 +38,7 @@ import materialtest.theartistandtheengineer.co.materialtest.materialtest.Activit
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
 
 
-public class SingleBookActivity extends ActionBarActivity {
+public class SingleBookActivity extends ActionBarActivity implements View.OnClickListener,DialogInterface.OnClickListener{
 
     private ProgressDialog pDialog;
     private ImageLoader mImageLoader;
@@ -50,6 +52,8 @@ public class SingleBookActivity extends ActionBarActivity {
     private Spinner spinner;
     private Button button;
     private EditText sell_amount;
+
+    private TextView t;
 
     private String bookTitle, bookAuthor, isbn_13, url;
 
@@ -91,38 +95,11 @@ public class SingleBookActivity extends ActionBarActivity {
         sell_amount = (EditText) findViewById(R.id.sell_amount);
         spinner = (Spinner) findViewById(R.id.spinner);
         button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-
-                Toast.makeText(SingleBookActivity.this,
-                        "OnClickListener : " +
-                                "\nSpinner: " + String.valueOf(spinner.getSelectedItem()),
-                        Toast.LENGTH_SHORT).show();
-
-                if (sell_amount.length() > 0) {
-                    Log.d("asking price = ", sell_amount.getText().toString());
-                    Toast.makeText(getApplicationContext(),
-                            "Success", Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    // Prompt user to enter credentials
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter a selling price.", Toast.LENGTH_LONG)
-                            .show();
-                }
-                //Log.d("condition = ", String.valueOf(spinner.getSelectedItem()));
-
-            }
-        });
 
         //addListenerOnSpinnerItemSelection();
 
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-
 
         tv_bookTitle = (TextView) findViewById(R.id.bookTitle);
         tv_bookTitle.setText(bookTitle);
@@ -134,10 +111,14 @@ public class SingleBookActivity extends ActionBarActivity {
         mImageLoader = VolleySingleton.getInstance().getImageLoader();
         mImageLoader.get(url, ImageLoader.getImageListener(mImageView, R.drawable.ic_book215, R.drawable.ic_book219));
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        button.setOnClickListener(this);
     }
 
 
@@ -153,7 +134,7 @@ public class SingleBookActivity extends ActionBarActivity {
     }
 
     // get the selected dropdown list value
-    public void addListenerOnButton() {
+    /*public void addListenerOnButton() {
         sell_amount = (EditText) findViewById(R.id.sell_amount);
         spinner = (Spinner) findViewById(R.id.spinner);
         button = (Button) findViewById(R.id.button);
@@ -182,12 +163,12 @@ public class SingleBookActivity extends ActionBarActivity {
 
             }
         });
-    }
+    }*/
 
-    public void addListenerOnSpinnerItemSelection() {
+    /*public void addListenerOnSpinnerItemSelection() {
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,12 +198,63 @@ public class SingleBookActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View v) {
+
+        if (sell_amount.length() > 0){
+            AlertDialog ad = new AlertDialog.Builder(this)
+                    .setMessage("Title: "+bookTitle+"\nAuthor: "+bookAuthor+"\nISBN: "+isbn_13+"\nPrice: $"+sell_amount.getText().toString()+"\nCondition: "+String.valueOf(spinner.getSelectedItem()))
+                    .setIcon(R.drawable.ic_launcher)
+                    .setTitle("Confirm listing")
+                    .setPositiveButton("Post", this)
+                    .setNeutralButton("Cancel", this)
+                    .setCancelable(false)
+                    .create();
+
+            ad.show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),
+                    "You must enter a price",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        // TODO Auto-generated method stub
+        switch(which){
+            case DialogInterface.BUTTON_POSITIVE: // yes
+                postSale(bookTitle, bookAuthor, isbn_13, sell_amount.getText().toString(), String.valueOf(spinner.getSelectedItem()));
+                Toast.makeText(getApplicationContext(),
+                        "Selected Sell",
+                        Toast.LENGTH_LONG).show();
+                break;
+
+            case DialogInterface.BUTTON_NEUTRAL: // neutral
+
+                Toast.makeText(getApplicationContext(),
+                        "Selected Cancel",
+                        Toast.LENGTH_LONG).show();
+                break;
+            default:
+                // nothing
+                break;
+        }
+    }
+
+    private void postSale(final String bookTitle, final String bookAuthor, final String isbn_13, final String sell_amount, final String condition) {
+        pDialog.setMessage("Posting...");
+        showDialog();
+        hideDialog();
+    }
+
     private class CustomOnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(parent.getContext(),
+            /*Toast.makeText(parent.getContext(),
                     "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();*/
 
         }
 
