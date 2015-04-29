@@ -37,6 +37,8 @@
     </string-array>
 
     <string name="condition_prompt">Book Condition</string>
+    <string name="menu_option_complete_transaction">Complete Transaction</string>
+    <string name="menu_option_cancel_transaction">Cancel Transaction</string>
 
     <string-array name="condition_array">
         <item>New</item>
@@ -46,5 +48,6 @@
         <item>Bad</item>
     </string-array>
     <string name="title_activity_confirm_sell">ConfirmSellActivity</string>
+    <string name="title_activity_ratings">Rate User</string>
 
 </resources>
